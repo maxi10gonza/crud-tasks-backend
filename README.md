@@ -105,4 +105,23 @@ Actualiza una tarea específica por su ID.
 
 - **Respuesta**:
     - **Código de estado 200**: Tarea actualizada exitosamente.
-    - **
+    - **Código de estado 404**: Tarea no encontrada.
+    - **Código de estado 400**: Error en la validación de los datos.
+    
+### DELETE /tasks/:id
+
+Elimina una tarea específica por su ID.
+
+- **Parámetros de la URL**:
+    - `id`: ID de la tarea a eliminar.
+
+- **Respuesta**:
+    - **Código de estado 200**: Tarea eliminada exitosamente.
+    - **Código de estado 404**: Tarea no encontrada.
+
+### Ejecución
+
+Para iniciar el servidor, utiliza el siguiente comando:
+
+```sh
+npm run dev
