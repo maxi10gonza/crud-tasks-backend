@@ -1,8 +1,8 @@
 const connection = require("../database/db");
 
-// Controlador para obtener todos los usuarios
+// Controlador para obtener todas las tareas
 const todasLasTareas = async (req, res) => {
-    const sql = 'SELECT * FROM tasks'; //  Consulta SQL para obtener todos los usuarios
+    const sql = 'SELECT * FROM tasks'; //  Consulta SQL para obtener todas las tareas
     console.log('Ejecutando consulta para obtener todas las tareas'); // Mensaje de depuración
 
 connection.query(sql, (error, results) => {
@@ -32,11 +32,11 @@ const tareaPorId = async (req, res) => {
     if (!results.length) {
         console.log('Tarea no encontrada con ID:', id); //  Mensaje de depuración
         res.status(404).send('Tarea no encontrada'); //  Enviar respuesta de no encontrado
-        return; //  Salir de la función si no se encuentra el usuario
+        return; //  Salir de la función si no se encuentra la tarea
     }
 
       console.log('Tarea encontrado:', results[0]); // Mensaje de depuración
-      res.json(results[0]); // Enviar usuario al cliente
+      res.json(results[0]); // Enviar tarea al cliente
     });
 }
 
@@ -56,7 +56,7 @@ const crearTarea = async (req, res) => {
     const query = `INSERT INTO tasks (title, description, isComplete) VALUES (?, ?, ?)`;
     const values = [title, description, isComplete]; // Valores para la consulta
 
-    // cuarto paso: ejecutamos la consulta SQL para crear el usuario
+    // cuarto paso: ejecutamos la consulta SQL para crear la tarea
     connection.query(query, values, (error, results) => {
     if (error) {
         console.error('Error al crear tarea:', error); // Registrar error en consola
@@ -70,7 +70,7 @@ const crearTarea = async (req, res) => {
 }
 
 const actualizarTarea = async (req, res) => {
-    // Obtiene el ID del usuario y datos del cuerpo de la solicitud
+    // Obtiene el ID de la tarea y datos del cuerpo de la solicitud
     const id = req.params.id;
     const { title, description, isComplete } = req.body;
 
@@ -80,11 +80,11 @@ if (!title || !description || !isComplete) {
     return; // Salir de la función si faltan datos
 }
 
-    // se hace la consulta SQL para actualizar el usuario
+    // se hace la consulta SQL para actualizar la tarea
 const query = `UPDATE tasks SET title = ?, description = ?, isComplete = ? WHERE id = ?`;
 const values = [title, description, isComplete, id]; // Valores para la consulta
 
-    // ejecutamos la consulta SQL para actualizar el usuario
+    // ejecutamos la consulta SQL para actualizar el tarea
 connection.query(query, values, (error, results) => {
     if (error) {
         console.error('Error al actualizar tarea:', error); // Registrar error en consola
@@ -94,7 +94,7 @@ connection.query(query, values, (error, results) => {
 
       // verificar si se actualizó algún registro
     if (results.affectedRows === 0) {
-        res.status(404).send('Tarea no encontrada'); // Enviar respuesta de error (código 404) si no se encuentra el usuario
+        res.status(404).send('Tarea no encontrada'); // Enviar respuesta de error (código 404) si no se encuentra la tarea
         return; // Salir de la función si no se actualizó ningún registro
     }
 
@@ -104,14 +104,14 @@ connection.query(query, values, (error, results) => {
 }
 
 const eliminarTarea = async (req, res) => {
-    // se obtiene el ID del usuario a eliminar
+    // se obtiene el ID de la tarea a eliminar
     const id = req.params.id; // Extraer el ID del parámetro de la URL
 
-    // hacemos la consulta SQL para eliminar el usuario
+    // hacemos la consulta SQL para eliminar la tarea
     const query = `DELETE FROM tasks WHERE id = ${id}`; // Consulta SQL para eliminar el registro con el ID especificado
-    const values = [id]; // Valor para la consulta (el ID del usuario)
+    const values = [id]; // Valor para la consulta (el ID de la tarea)
 
-    // ejecutamos la consulta SQL para eliminar el usuario
+    // ejecutamos la consulta SQL para eliminar la tarea
 connection.query(query, values, (error, results) => {
     if (error) {
         // Si ocurre un error al ejecutar la consulta
@@ -122,13 +122,13 @@ connection.query(query, values, (error, results) => {
 
       // se verifica si se eliminó algún registro
     if (results.affectedRows === 0) {
-        // Si no se eliminó ningún registro (es decir, no se encontró el usuario)
+        // Si no se eliminó ningún registro (es decir, no se encontró la tarea)
         res.status(404).send('Tarea no encontrada'); // Enviar respuesta de error al cliente (código HTTP 404)
-        return; // Salir de la función si no se encontró el usuario
+        return; // Salir de la función si no se encontró la tarea
     }
 
-      // se notifica que se realizo bien la consulta y se elimina el usuario
-      res.json({ message: 'Tarea eliminada correctamente' }); // Enviar respuesta de éxito al cliente indicando que el usuario se eliminó correctamente
+      // se notifica que se realizo bien la consulta y se elimina la tarea
+      res.json({ message: 'Tarea eliminada correctamente' }); // Enviar respuesta de éxito al cliente indicando que la tarea se eliminó correctamente
     });
 } 
 
